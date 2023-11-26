@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo apt-get install tmux fzf neofetch stow
+sudo apt-get install tmux fzf neofetch stow ripgrep
 
 # Starship
 curl -sS https://starship.rs/install.sh | sh
