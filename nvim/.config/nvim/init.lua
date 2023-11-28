@@ -76,6 +76,12 @@ require('lazy').setup({
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
 
+  -- Movement integration with Tmux
+  'christoomey/vim-tmux-navigator',
+
+  -- Harpoon by The Harpoon Man
+  'ThePrimeagen/harpoon',
+
   -- NOTE: This is where your plugins related to LSP can be installed.
   --  The configuration is done below. Search for lspconfig to find it below.
   {
@@ -603,6 +609,18 @@ cmp.setup {
     { name = 'luasnip' },
   },
 }
+
+-- Harpoon shortcuts
+local mark = require('harpoon.mark')
+local ui = require('harpoon.ui')
+
+vim.keymap.set('n', '<A-a>', mark.add_file, { desc = '[A]dd file to Telescope' })
+vim.keymap.set('n', '<A-e>', ui.toggle_quick_menu, { desc = '[E]xplore Harpoon' })
+
+vim.keymap.set('n', '<A-j>', function () ui.nav_file(1) end, { desc = 'Change to Telescope [1]' })
+vim.keymap.set('n', '<A-k>', function () ui.nav_file(2) end, { desc = 'Change to Telescope [2]' })
+vim.keymap.set('n', '<A-l>', function () ui.nav_file(3) end, { desc = 'Change to Telescope [3]' })
+vim.keymap.set('n', '<A-ñ>', function () ui.nav_file(4) end, { desc = 'Change to Telescope [4]' })
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
