@@ -131,8 +131,8 @@ fi
 eval "$(starship init bash)"
 
 # Add Neofetch
-cat ~/.config/.neofetch 2> /dev/null
-setsid neofetch >| ~/.config/.neofetch
+cat ~/.config/neofetch/.neofetch 2> /dev/null
+setsid neofetch >| ~/.config/neofetch/.neofetch &
 
 # Custom aliases
 alias python='python3'
