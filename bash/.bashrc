@@ -125,14 +125,15 @@ if [ -f ~/.bash_local ]; then
     . ~/.bash_local
 fi
 # Add cargo
-. "$HOME/.cargo/env"
-
+if [ -f $HOME/.cargo/env ]; then
+    . "$HOME/.cargo/env"
+fi
 # Add Starship
 eval "$(starship init bash)"
 
 # Add Neofetch
 cat ~/.config/neofetch/.neofetch 2> /dev/null
-setsid neofetch >| ~/.config/neofetch/.neofetch &
+(setsid neofetch >| ~/.config/neofetch/.neofetch &)
 
 # Custom aliases
 alias python='python3'
