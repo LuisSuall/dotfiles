@@ -1,3 +1,3 @@
-stow --adopt bash nvim tmux alacritty
+stow --adopt bash nvim tmux alacritty qtile
 git reset --hard HEAD
 
