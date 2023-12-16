@@ -24,13 +24,26 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from libqtile import bar, layout, widget
+import os
+import subprocess
+from enum import Enum
+
+from libqtile import bar, layout, widget, hook
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 
 mod = "mod4"
 terminal = guess_terminal()
+
+@hook.subscribe.startup_once
+def autostart():
+    home = os.path.expanduser('~/.config/qtile/autostart.sh')
+    subprocess.Popen([home])
+
+class Colors(str, Enum):
+    WHITE = "#ffffff"
+    BLACK = "#000000"
 
 keys = [
     # A list of available commands that can be bound to keys can be found
@@ -81,22 +94,23 @@ keys = [
     Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
 ]
 
-groups = [Group(i) for i in "123456789"]
+groups = [Group(i) for i in "󰖟󰇰󰊻󱔗󰌃󰲸"]
+groups_key = [i for i in "123456789"]
 
-for i in groups:
+for i, key in zip(groups, groups_key):
     keys.extend(
         [
             # mod1 + letter of group = switch to group
             Key(
                 [mod],
-                i.name,
+                key,
                 lazy.group[i.name].toscreen(),
                 desc="Switch to group {}".format(i.name),
             ),
             # mod1 + shift + letter of group = switch to & move focused window to group
             Key(
                 [mod, "shift"],
-                i.name,
+                key,
                 lazy.window.togroup(i.name, switch_group=True),
                 desc="Switch to & move focused window to group {}".format(i.name),
             ),
@@ -124,7 +138,7 @@ layouts = [
 ]
 
 widget_defaults = dict(
-    font="sans",
+    font="JetBrainsMono Nerd Font Mono",
     fontsize=12,
     padding=3,
 )
@@ -134,7 +148,8 @@ screens = [
     Screen(
         top=bar.Bar(
             [
-                widget.CurrentLayout(),
+                widget.CurrentLayoutIcon(),
+                widget.TextBox("", name="divider"),
                 widget.GroupBox(),
                 widget.Prompt(),
                 widget.WindowName(),
@@ -144,7 +159,7 @@ screens = [
                     },
                     name_transform=lambda name: name.upper(),
                 ),
-                widget.TextBox("default config", name="default"),
+                widget.TextBox("default -- config", name="default"),
                 widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
                 # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
                 # widget.StatusNotifier(),
@@ -153,6 +168,7 @@ screens = [
                 widget.QuickExit(),
             ],
             24,
+            opacity=0.6,
             # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
             # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
         ),
