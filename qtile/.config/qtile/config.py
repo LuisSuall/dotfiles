@@ -28,7 +28,7 @@ import os
 import subprocess
 from enum import Enum
 
-from libqtile import bar, layout, widget, hook
+from libqtile import bar, layout, widget, hook, extension
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
@@ -44,6 +44,8 @@ def autostart():
 class Colors(str, Enum):
     WHITE = "#ffffff"
     BLACK = "#000000"
+    RED = "#ff0000"
+    BLUE = "#0000ff"
 
 keys = [
     # A list of available commands that can be bound to keys can be found
@@ -91,7 +93,12 @@ keys = [
     Key([mod], "t", lazy.window.toggle_floating(), desc="Toggle floating on the focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
-    Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
+    # Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
+    
+    Key([mod], 'r', lazy.spawn('rofi -show run')),
+    Key([], "XF86AudioLowerVolume", lazy.spawn("amixer sset Master 5%-"), desc="Lower Volume by 5%"),
+    Key([], "XF86AudioRaiseVolume", lazy.spawn("amixer sset Master 5%+"), desc="Raise Volume by 5%"),
+    Key([], "XF86AudioMute", lazy.spawn("amixer sset Master 1+ toggle"), desc="Mute/Unmute Volume"), 
 ]
 
 groups = [Group(i) for i in "󰖟󰇰󰊻󱔗󰌃󰲸"]
@@ -133,7 +140,7 @@ layouts = [
     # layout.TreeTab(),
     # layout.VerticalTile(),
     # layout.Zoomy(),
-    layout.MonadTall(),
+    layout.MonadTall(margin=8, ratio=0.6),
     layout.Max(),
 ]
 
@@ -148,9 +155,18 @@ screens = [
     Screen(
         top=bar.Bar(
             [
-                widget.CurrentLayoutIcon(),
-                widget.TextBox("", name="divider"),
-                widget.GroupBox(),
+                widget.TextBox("",
+                    name="divider",
+                    foreground=Colors.RED,
+                    padding=0,
+                    fontsize=19),
+                widget.CurrentLayoutIcon(background=Colors.RED),
+                widget.GroupBox(background=Colors.RED),
+                widget.TextBox("",
+                    name="divider",
+                    foreground=Colors.RED,
+                    padding=0,
+                    fontsize=19),
                 widget.Prompt(),
                 widget.WindowName(),
                 widget.Chord(
@@ -159,13 +175,25 @@ screens = [
                     },
                     name_transform=lambda name: name.upper(),
                 ),
-                widget.TextBox("default -- config", name="default"),
-                widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
+                widget.TextBox("",
+                    name="divider",
+                    foreground=Colors.RED,
+                    padding=0,
+                    fontsize=19),
+                # widget.TextBox("default -- config", name="default"),
+                # widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
                 # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
                 # widget.StatusNotifier(),
-                widget.Systray(),
-                widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
-                widget.QuickExit(),
+                widget.Systray(background=Colors.RED),
+                widget.Volume(background=Colors.RED),
+                widget.Battery(format='{char} {percent:2.0%}',background=Colors.RED),
+                widget.Clock(format="%Y-%m-%d %I:%M %p",background=Colors.RED),
+                widget.QuickExit(background=Colors.RED),
+                widget.TextBox("",
+                    name="divider",
+                    foreground=Colors.RED,
+                    padding=0,
+                    fontsize=19),
             ],
             24,
             opacity=0.6,
