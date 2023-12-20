@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo apt-get install tmux fzf neofetch stow ripgrep xclip git curl build-essential nitrogen compton
+sudo apt-get install tmux fzf neofetch stow ripgrep xclip git curl build-essential nitrogen compton i3lock-fancy brightnessctl
 
 # Starship
 curl -sS https://starship.rs/install.sh | sh

@@ -29,7 +29,7 @@ import subprocess
 from enum import Enum
 
 from libqtile import bar, layout, widget, hook, extension
-from libqtile.config import Click, Drag, Group, Key, Match, Screen
+from libqtile.config import Click, Drag, Group, Key, Match, Screen, ScratchPad, DropDown
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 
@@ -55,7 +55,6 @@ keys = [
     Key([mod], "l", lazy.layout.right(), desc="Move focus to right"),
     Key([mod], "j", lazy.layout.down(), desc="Move focus down"),
     Key([mod], "k", lazy.layout.up(), desc="Move focus up"),
-    Key([mod], "space", lazy.layout.next(), desc="Move window focus to other window"),
     # Move windows between left/right columns or move up/down in current stack.
     # Moving out of range in Columns layout will create new column.
     Key([mod, "shift"], "h", lazy.layout.shuffle_left(), desc="Move window to the left"),
@@ -80,9 +79,11 @@ keys = [
         desc="Toggle between split and unsplit sides of stack",
     ),
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
+    Key([mod], "space", lazy.group['Scratchpad'].dropdown_toggle('Term'), desc="Open Scratchpad"),
     Key([mod], "w", lazy.spawn("firefox"), desc="Launch Firefox"),
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
+    Key([mod], 'period', lazy.next_screen(), desc='Next monitor'),
     Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
     Key(
         [mod],
@@ -92,6 +93,7 @@ keys = [
     ),
     Key([mod], "t", lazy.window.toggle_floating(), desc="Toggle floating on the focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
+    Key([mod, "control"], "l", lazy.spawn("i3lock-fancy"), desc="Lock screen"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     # Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
     
@@ -99,6 +101,9 @@ keys = [
     Key([], "XF86AudioLowerVolume", lazy.spawn("amixer sset Master 5%-"), desc="Lower Volume by 5%"),
     Key([], "XF86AudioRaiseVolume", lazy.spawn("amixer sset Master 5%+"), desc="Raise Volume by 5%"),
     Key([], "XF86AudioMute", lazy.spawn("amixer sset Master 1+ toggle"), desc="Mute/Unmute Volume"), 
+
+    Key([], "XF86MonBrightnessUp",lazy.spawn("brightnessctl s 500+")),
+    Key([], "XF86MonBrightnessDown",lazy.spawn("brightnessctl s 500-")),
 ]
 
 groups = [Group(i) for i in "󰖟󰇰󰊻󱔗󰌃󰲸"]
@@ -128,6 +133,12 @@ for i, key in zip(groups, groups_key):
         ]
     )
 
+# Add scratch pad
+groups.append(
+    ScratchPad('Scratchpad', [
+        DropDown('Term', terminal, opacity = 0.9, height = 0.7, width = 0.8),
+    ]),
+)
 layouts = [
     # layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=4),
     # Try more layouts by unleashing below layouts.
@@ -161,7 +172,7 @@ screens = [
                     padding=0,
                     fontsize=19),
                 widget.CurrentLayoutIcon(background=Colors.RED),
-                widget.GroupBox(background=Colors.RED),
+                widget.GroupBox(background=Colors.RED, fontsize=24),
                 widget.TextBox("",
                     name="divider",
                     foreground=Colors.RED,
