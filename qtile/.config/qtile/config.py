@@ -93,7 +93,7 @@ keys = [
     ),
     Key([mod], "t", lazy.window.toggle_floating(), desc="Toggle floating on the focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
-    Key([mod, "control"], "l", lazy.spawn("i3lock-fancy"), desc="Lock screen"),
+    Key([mod], "Escape", lazy.spawn("i3lock-fancy"), desc="Lock screen"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     # Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
     
@@ -241,6 +241,7 @@ floating_layout = layout.Floating(
         Match(wm_class="ssh-askpass"),  # ssh-askpass
         Match(title="branchdialog"),  # gitk
         Match(title="pinentry"),  # GPG key password entry
+        Match(title="Configuración"),  # GPG key password entry
     ]
 )
 auto_fullscreen = True
