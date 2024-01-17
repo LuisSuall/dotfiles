@@ -237,6 +237,9 @@ require('lazy').setup({
   --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
   -- { import = 'custom.plugins' },
   -- lazy.nvim
+  -- Noice.vim
+  -- Seems that some dependencies dont work well with the standard install, commented below
+  -- Maybe is the "VeryLazy"? Just importing directly everything may work
   {
     "folke/noice.nvim",
     event = "VeryLazy",
@@ -252,6 +255,9 @@ require('lazy').setup({
       "rcarriga/nvim-notify",
       }
   },
+  -- "folke/noice.nvim",
+  -- "MunifTanjim/nui.nvim",
+  -- "rcarriga/nvim-notify"
 }, {})
 
 -- [[ Setting options ]]
@@ -645,6 +651,29 @@ vim.keymap.set('n', '<A-j>', function () ui.nav_file(1) end, { desc = 'Change to
 vim.keymap.set('n', '<A-k>', function () ui.nav_file(2) end, { desc = 'Change to Telescope [2]' })
 vim.keymap.set('n', '<A-l>', function () ui.nav_file(3) end, { desc = 'Change to Telescope [3]' })
 vim.keymap.set('n', '<A-ñ>', function () ui.nav_file(4) end, { desc = 'Change to Telescope [4]' })
+
+-- [[ configure noice ]]
+require("lualine").setup({
+  sections = {
+    lualine_x = {
+      {
+        require("noice").api.statusline.mode.get,
+        cond = require("noice").api.statusline.mode.has,
+        color = { fg = "#ff9e64" },
+      }
+    },
+  },
+})
+-- Make noice show mode and recording. By now I prefer it in the status line (above)
+-- local noice = require("noice")
+-- noice.setup({
+--   routes = {
+--     {
+--       view = "notify",
+--       filter = { event = "msg_showmode" },
+--     },
+--   },
+-- })
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
