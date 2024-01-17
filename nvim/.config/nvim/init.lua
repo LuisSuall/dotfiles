@@ -309,7 +309,7 @@ vim.keymap.set('i', 'jj', '<Esc>', { desc = 'jj as escape' })
 
 -- <Leader> d and p without losing register
 vim.keymap.set({ 'n', 'v' }, '<Leader>d', '"_d', { desc = 'Delete to void register' })
-vim.keymap.set('v', '<Leader>p', '"_dp', { desc = 'Paste without losing yank' })
+vim.keymap.set('v', '<Leader>p', '"_dP', { desc = 'Paste without losing yank' })
 
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
