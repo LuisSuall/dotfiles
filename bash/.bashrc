@@ -124,10 +124,12 @@ source /usr/share/bash-completion/completions/fzf
 if [ -f ~/.bash_local ]; then
     . ~/.bash_local
 fi
+
 # Add cargo
 if [ -f $HOME/.cargo/env ]; then
     . "$HOME/.cargo/env"
 fi
+
 # Add Starship
 eval "$(starship init bash)"
 
