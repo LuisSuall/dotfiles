@@ -145,3 +145,10 @@ cat ~/.config/neofetch/.neofetch 2> /dev/null
 alias python='python3'
 alias yt-download='yt-dlp -q --progress -f mp4 -a'
 
+# Add Spark
+export SPARK_HOME=/opt/spark
+export PATH=$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin
+
+export NVM_DIR="$HOME/.config/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
